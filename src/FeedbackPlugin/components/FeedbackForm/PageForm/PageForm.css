@@ -8,6 +8,8 @@
 }
 
 .p2submit{
+    background-color: lightgrey;
+    color: black;
     border: none;
     cursor: pointer;
     position: absolute;
@@ -25,6 +27,8 @@
 }
 
 .p2back{
+    background-color: lightgrey;
+    color: black;
     border: none;
     cursor: pointer;
     position: absolute;

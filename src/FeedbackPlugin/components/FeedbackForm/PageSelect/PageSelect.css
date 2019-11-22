@@ -8,6 +8,8 @@
 }
 
 .p1btn{
+    background-color: lightgrey;
+    color: black;
     margin: 7px;
     font-size: large;
     width: 60%;
@@ -34,6 +36,8 @@
 }
 
 .p1next{
+    color: black;
+    background-color: lightgrey;
     border: none;
     cursor: pointer;
     position: absolute;
