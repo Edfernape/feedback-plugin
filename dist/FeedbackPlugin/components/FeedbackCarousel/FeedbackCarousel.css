@@ -1,0 +1,113 @@
+.carousel{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 10px;
+    border-radius: 10px;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    border: none;
+    text-align: center;
+    align-items: center;
+}
+
+.carouselBtn{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    width: max-content;
+    transition: 0.5s;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 48%;
+}
+
+.carouselBtn:hover{
+    border: 2px solid #717171;
+}
+
+.carouselCloser{
+    position: absolute;
+    border: 1px solid black;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: 0.5s;
+    padding: 1px 4px 1px 4px;
+}
+
+.carouselCloser:hover{
+    opacity: 0.8;
+}
+
+.dotContainer{
+    position: absolute;
+    bottom: 10px;
+}
+
+.dot{
+    cursor: pointer;
+    height: 10px;
+    width: 10px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 5px;
+    transition: background-color 0.6s ease;
+}
+
+.dot:hover{
+    background-color: #717171;
+}
+
+.dotActive{
+    cursor: pointer;
+    height: 10px;
+    width: 10px;
+    background-color: #717171;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 5px;
+    transition: background-color 0.6s ease;
+}
+
+@keyframes carouselRappear{
+    from{right: -11%}
+    to{right: 1%}
+}
+
+@keyframes carouselRdisappear{
+    from{right: 1%}
+    to{right: -270px}
+}
+
+@keyframes carouselLappear{
+    from{left: -11%}
+    to{left: 1%}
+}
+
+@keyframes carouselLdisappear{
+    from{left: 1%}
+    to{left: -270px}
+}
+
+@keyframes carouselTappear{
+    from{top: -11%}
+    to{top: 1%}
+}
+
+@keyframes carouselTdisappear{
+    from{top: 1%}
+    to{top: -270px}
+}
+
+@keyframes carouselBappear{
+    from{bottom: -11%}
+    to{bottom: 1%}
+}
+
+@keyframes carouselBdisappear{
+    from{bottom: 1%}
+    to{bottom: -270px}
+}

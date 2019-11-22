@@ -1,0 +1,74 @@
+.openerDiv{
+    position: fixed;
+}
+
+.opener{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    position: absolute;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: 0.5s;
+    width: inherit;
+    height: inherit;
+}
+
+.closer{
+    position: absolute;
+    border: 1px solid black;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: 0.5s;
+    padding: 1px 4px 1px 4px;
+}
+
+.closer:hover{
+    opacity: 0.8;
+}
+
+.opener:hover{
+    opacity: 0.8;
+}
+
+@keyframes Rappear{
+    from{right: -11%}
+    to{right: 1%}
+}
+
+@keyframes Rdisappear{
+    from{right: 1%}
+    to{right: -200px}
+}
+
+@keyframes Lappear{
+    from{left: -11%}
+    to{left: 1%}
+}
+
+@keyframes Ldisappear{
+    from{left: 1%}
+    to{left: -200px}
+}
+
+@keyframes Tappear{
+    from{top: -11%}
+    to{top: 1%}
+}
+
+@keyframes Tdisappear{
+    from{top: 1%}
+    to{top: -200px}
+}
+
+@keyframes Bappear{
+    from{bottom: -11%}
+    to{bottom: 1%}
+}
+
+@keyframes Bdisappear{
+    from{bottom: 1%}
+    to{bottom: -200px}
+}
+

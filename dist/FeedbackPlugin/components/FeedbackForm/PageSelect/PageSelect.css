@@ -1,0 +1,51 @@
+.p1{
+    display: flex;
+    width: inherit;
+    height: inherit;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+.p1btn{
+    margin: 7px;
+    font-size: large;
+    width: 60%;
+    padding: 3px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.p1btnselected{
+    margin: 7px;
+    font-size: large;
+    border: none;
+    width: 60%;
+    padding: 3px;
+    border-radius: 5px;
+    cursor: pointer;
+    animation: 0.5s light both;
+}
+
+@keyframes light{
+    from{width: 60%;}
+    to{width:70%; background-color: lightgreen;}
+}
+
+.p1next{
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    border-radius: 10px;
+    font-size: medium;
+    width: 20%;
+    transition: 0.5s;
+}
+
+.p1next:hover{
+    width: 25%;
+    background-color: lightgreen;
+}
