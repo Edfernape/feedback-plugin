@@ -1,0 +1,42 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "prettier",
+        "airbnb"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "prettier"
+    ],
+    "rules": {
+        "prettier/prettier": ["error"],
+        "operator-linebreak": "off",
+        "react/destructuring-assignment": "off",
+        "react/prop-types": "off",
+        "class-methods-use-this": "off",
+        "prefer-destructuring": "off",
+        "object-shorthand": "off",
+        "arrow-parens": "off",
+        "jsx-a11y/label-has-associated-control": [ "error", {
+          "required": {
+            "some": [ "nesting", "id"  ]
+          }
+        }]
+    }
+}
