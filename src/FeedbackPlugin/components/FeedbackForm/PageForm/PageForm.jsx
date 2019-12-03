@@ -1,32 +1,32 @@
 /*  props available:
 childSetPage method
-setCat method
 formCategory */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import './PageForm.css';
 
 const data = {
-  1: {
+  4: {
     heading: 'General Feedback Form',
     pointers: '',
     ask:
       'Please indicate how urgent/important you would consider your feedback:',
     desc: 'urgent/important',
   },
-  2: {
+  3: {
     heading: 'Usability Issue Reporting Form',
     pointers: '',
     ask: 'Please indicate the severity of this issue:',
     desc: 'severe',
   },
-  3: {
+  2: {
     heading: 'Bug Reporting Form',
     pointers: '',
     ask: 'Please indicate the severity of this bug:',
     desc: 'severe',
   },
-  4: {
+  1: {
     heading: 'Vulnerability Reporting Form',
     pointers: '',
     ask: 'Please indicate the severity of this vulnerability:',
@@ -44,8 +44,9 @@ const data = {
 export default class PageForm extends React.Component {
   constructor(props) {
     super(props);
+    const { formCategory } = this.props;
     this.state = {
-      formCategory: this.props.formCategory,
+      formCategory,
       title: '',
       mainText: '',
       rating: 3,
@@ -138,10 +139,13 @@ export default class PageForm extends React.Component {
   }
 
   p2back() {
-    this.props.childSetPage(1);
+    const { childSetPage } = this.props;
+    childSetPage(1);
   }
 
   p2submit() {
+    const { formCategory, title, mainText, rating } = this.state;
+    const { childSetPage } = this.props;
     // event.preventDefault();
 
     // using fetch to post
@@ -149,10 +153,10 @@ export default class PageForm extends React.Component {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        category: this.state.formCategory,
-        title: this.state.title,
-        mainText: this.state.mainText,
-        rating: this.state.rating,
+        category: formCategory,
+        title,
+        mainText,
+        rating,
       }),
     });
     // .then(response => {
@@ -177,17 +181,21 @@ export default class PageForm extends React.Component {
     //     console.log(error);
     //   });
 
-    this.props.childSetPage(3);
+    childSetPage(3);
   }
 
   render() {
+    const { formCategory, mainText, title } = this.state;
     return (
       <form id="p2form" className="p2">
         <h3 style={{ margin: '15px 0px' }}>
-          {data[this.state.formCategory].heading}
+          {data[formCategory].heading}
         </h3>
         <input
-          value={this.state.title}
+          style={{
+            color: 'black',
+          }}
+          value={title}
           className="p2f1"
           maxLength="150"
           type="text"
@@ -196,7 +204,10 @@ export default class PageForm extends React.Component {
           required
         />
         <textarea
-          value={this.state.mainText}
+          style={{
+            color: 'black',
+          }}
+          value={mainText}
           maxLength="1000"
           wrap="hard"
           rows="8"
@@ -205,7 +216,7 @@ export default class PageForm extends React.Component {
           placeholder="Enter your response here."
           onChange={this.mainTextChange}
         />
-        <h5 className="p2f3">{data[this.state.formCategory].ask}</h5>
+        <h5 className="p2f3">{data[formCategory].ask}</h5>
         <div
           id="rateDiv"
           style={{
@@ -217,14 +228,14 @@ export default class PageForm extends React.Component {
         >
           <input id="rate5" name="rating" type="radio" value="5" />
           <label
-            title={`Extremely ${data[this.state.formCategory].desc}`}
+            title={`Extremely ${data[formCategory].desc}`}
             htmlFor="rate5"
           >
             &#x2605;
           </label>
           <input id="rate4" name="rating" type="radio" value="4" />
           <label
-            title={`Very ${data[this.state.formCategory].desc}`}
+            title={`Very ${data[formCategory].desc}`}
             htmlFor="rate4"
           >
             &#x2605;
@@ -237,21 +248,21 @@ export default class PageForm extends React.Component {
             defaultChecked
           />
           <label
-            title={`Quite ${data[this.state.formCategory].desc}`}
+            title={`Quite ${data[formCategory].desc}`}
             htmlFor="rate3"
           >
             &#x2605;
           </label>
           <input id="rate2" name="rating" type="radio" value="2" />
           <label
-            title={`Fairly ${data[this.state.formCategory].desc}`}
+            title={`Fairly ${data[formCategory].desc}`}
             htmlFor="rate2"
           >
             &#x2605;
           </label>
           <input id="rate1" name="rating" type="radio" value="1" />
           <label
-            title={`Somewhat ${data[this.state.formCategory].desc}`}
+            title={`Somewhat ${data[formCategory].desc}`}
             htmlFor="rate1"
           >
             &#x2605;
@@ -265,3 +276,8 @@ export default class PageForm extends React.Component {
     );
   }
 }
+
+PageForm.propTypes = {
+  formCategory: PropTypes.number.isRequired,
+  childSetPage: PropTypes.func.isRequired,
+};

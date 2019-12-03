@@ -2,7 +2,7 @@
   "name": "feedback-plugin",
   "version": "1.0.2",
   "description": "A feedback submission prototype for React applications.",
-  "main": "dist/index.js",
+  "main": "dist/index",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --mode development",

@@ -18,6 +18,7 @@ closerPlacement
 */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import './FeedbackCarousel.css';
 
 const carouselMessage = {
@@ -37,91 +38,7 @@ const buttonMessage = {
 };
 
 export default class FeedbackCarousel extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      theme: this.setTheme(this.props.theme),
-      carouselSize: this.setSize(this.props.openerSize),
-      carouselPlacement: this.setPlacement(
-        this.props.openerPlacement,
-      ),
-      carouselStyles: {},
-      animation: this.setAnimation(this.props.openerPlacement),
-      scroller: null,
-      carouselPage: 1,
-      closerPlacement: this.setCloserPlacement(
-        this.props.openerPlacement,
-      ),
-    };
-    this.scroll = this.scroll.bind(this);
-    this.carouselClicked = this.carouselClicked.bind(this);
-    this.closerClicked = this.closerClicked.bind(this);
-    this.b1clicked = this.b1clicked.bind(this);
-    this.b2clicked = this.b2clicked.bind(this);
-    this.b3clicked = this.b3clicked.bind(this);
-    this.b4clicked = this.b4clicked.bind(this);
-    this.b5clicked = this.b5clicked.bind(this);
-  }
-
-  componentDidMount() {
-    // set styles, "timer" for scroll and event listeners
-    const theme = this.state.theme;
-    const size = this.state.carouselSize;
-    const placement = this.state.carouselPlacement;
-    const style = { ...theme, ...size, ...placement };
-    const scroller = setInterval(this.scroll, 5000);
-    this.setState({ carouselStyles: style, scroller: scroller });
-    document
-      .getElementById('b1')
-      .addEventListener('click', this.b1clicked);
-    document
-      .getElementById('b2')
-      .addEventListener('click', this.b2clicked);
-    document
-      .getElementById('b3')
-      .addEventListener('click', this.b3clicked);
-    document
-      .getElementById('b4')
-      .addEventListener('click', this.b4clicked);
-    document
-      .getElementById('b5')
-      .addEventListener('click', this.b5clicked);
-  }
-
-  componentDidUpdate() {
-    // update style of dots
-    const page = this.state.carouselPage;
-    for (let i = 1; i < 6; i += i) {
-      if (i === page) {
-        document.getElementById(`b ${i}`).className = 'dotActive';
-      } else {
-        document.getElementById(`b ${i}`).className = 'dot';
-      }
-    }
-  }
-
-  componentWillUnmount() {
-    // clear "timer" for scrolling and remove event listeners
-    clearInterval(this.state.scroll);
-    document
-      .getElementById('b1')
-      .removeEventListener('click', this.b1clicked);
-    document
-      .getElementById('b2')
-      .removeEventListener('click', this.b2clicked);
-    document
-      .getElementById('b3')
-      .removeEventListener('click', this.b3clicked);
-    document
-      .getElementById('b4')
-      .removeEventListener('click', this.b4clicked);
-    document
-      .getElementById('b5')
-      .removeEventListener('click', this.b5clicked);
-  }
-
-  /* functions to set carousel states based on props */
-  setTheme(theme) {
+  static setTheme(theme) {
     switch (theme) {
       case 'red':
         return { backgroundColor: '#e42217', color: 'whitesmoke' };
@@ -144,7 +61,7 @@ export default class FeedbackCarousel extends React.Component {
     }
   }
 
-  setSize(size) {
+  static setSize(size) {
     switch (size) {
       case 'small':
         return { width: '150px', height: '75px', fontSize: 'small' };
@@ -157,7 +74,7 @@ export default class FeedbackCarousel extends React.Component {
     }
   }
 
-  setPlacement(placement) {
+  static setPlacement(placement) {
     switch (placement) {
       case 'top':
         return {
@@ -196,7 +113,7 @@ export default class FeedbackCarousel extends React.Component {
     }
   }
 
-  setAnimation(placement) {
+  static setAnimation(placement) {
     switch (placement) {
       case 'top':
         return 'T';
@@ -219,7 +136,7 @@ export default class FeedbackCarousel extends React.Component {
     }
   }
 
-  setCloserPlacement(placement) {
+  static setCloserPlacement(placement) {
     switch (placement) {
       case 'top':
         return {
@@ -279,57 +196,164 @@ export default class FeedbackCarousel extends React.Component {
   }
 
   /* functions called upon rendering */
-  getCarouselMessage(page) {
+  static getCarouselMessage(page) {
     return carouselMessage[page];
   }
 
-  getButtonMessage(page) {
+  static getButtonMessage(page) {
     return buttonMessage[page];
+  }
+
+  static resolveCategory(page) {
+    switch (page) {
+      case 1:
+        return 4;
+      case 2:
+        return 3;
+      case 3:
+        return 2;
+      case 4:
+        return 1;
+      case 5:
+        return 5;
+      default:
+        return 4;
+    }
+  }
+
+  constructor(props) {
+    super(props);
+    const { theme, openerSize, openerPlacement } = this.props;
+    this.state = {
+      theme: FeedbackCarousel.setTheme(theme),
+      carouselSize: FeedbackCarousel.setSize(openerSize),
+      carouselPlacement: FeedbackCarousel.setPlacement(
+        openerPlacement,
+      ),
+      carouselStyles: {},
+      animation: FeedbackCarousel.setAnimation(openerPlacement),
+      scroller: null,
+      carouselPage: 1,
+      closerPlacement: FeedbackCarousel.setCloserPlacement(
+        openerPlacement,
+      ),
+    };
+    this.scroll = this.scroll.bind(this);
+    this.carouselClicked = this.carouselClicked.bind(this);
+    this.closerClicked = this.closerClicked.bind(this);
+    this.b1clicked = this.b1clicked.bind(this);
+    this.b2clicked = this.b2clicked.bind(this);
+    this.b3clicked = this.b3clicked.bind(this);
+    this.b4clicked = this.b4clicked.bind(this);
+    this.b5clicked = this.b5clicked.bind(this);
+  }
+
+  componentDidMount() {
+    // set styles, "timer" for scroll and event listeners
+    const { theme, carouselSize, carouselPlacement } = this.state;
+    const style = { ...theme, ...carouselSize, ...carouselPlacement };
+    const scroller = setInterval(this.scroll, 5000);
+    this.setState({ carouselStyles: style, scroller });
+    document
+      .getElementById('b1')
+      .addEventListener('click', this.b1clicked);
+    document
+      .getElementById('b2')
+      .addEventListener('click', this.b2clicked);
+    document
+      .getElementById('b3')
+      .addEventListener('click', this.b3clicked);
+    document
+      .getElementById('b4')
+      .addEventListener('click', this.b4clicked);
+    document
+      .getElementById('b5')
+      .addEventListener('click', this.b5clicked);
+  }
+
+  componentDidUpdate() {
+    const { carouselPage } = this.state;
+    for (let i = 1; i < 6; i += 1) {
+      if (i === carouselPage) {
+        document.getElementById(`b${i}`).className = 'dotActive';
+      } else {
+        document.getElementById(`b${i}`).className = 'dot';
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    const { scroller } = this.state;
+    clearInterval(scroller);
+    document
+      .getElementById('b1')
+      .removeEventListener('click', this.b1clicked);
+    document
+      .getElementById('b2')
+      .removeEventListener('click', this.b2clicked);
+    document
+      .getElementById('b3')
+      .removeEventListener('click', this.b3clicked);
+    document
+      .getElementById('b4')
+      .removeEventListener('click', this.b4clicked);
+    document
+      .getElementById('b5')
+      .removeEventListener('click', this.b5clicked);
   }
 
   /* onClick functions */
   closerClicked() {
-    this.props.closerClicked();
+    const { closerClicked } = this.props;
+    closerClicked();
   }
 
   carouselClicked() {
-    this.props.toggleShowOpener();
-    this.props.openerSetForm(this.state.carouselPage);
+    const { toggleShowOpener, openerSetForm } = this.props;
+    const { carouselPage } = this.state;
+    toggleShowOpener();
+    openerSetForm(FeedbackCarousel.resolveCategory(carouselPage));
   }
 
   b1clicked() {
-    clearInterval(this.state.scroller);
-    const scroller = setInterval(this.scroll, 5000);
-    this.setState({ carouselPage: 1, scroller: scroller });
+    const { scroller } = this.state;
+    clearInterval(scroller);
+    const scroller2 = setInterval(this.scroll, 5000);
+    this.setState({ carouselPage: 1, scroller: scroller2 });
   }
 
   b2clicked() {
-    clearInterval(this.state.scroller);
-    const scroller = setInterval(this.scroll, 5000);
-    this.setState({ carouselPage: 2, scroller: scroller });
+    const { scroller } = this.state;
+    clearInterval(scroller);
+    const scroller2 = setInterval(this.scroll, 5000);
+    this.setState({ carouselPage: 2, scroller: scroller2 });
   }
 
   b3clicked() {
-    clearInterval(this.state.scroller);
-    const scroller = setInterval(this.scroll, 5000);
-    this.setState({ carouselPage: 3, scroller: scroller });
+    const { scroller } = this.state;
+    clearInterval(scroller);
+    const scroller2 = setInterval(this.scroll, 5000);
+    this.setState({ carouselPage: 3, scroller: scroller2 });
   }
 
   b4clicked() {
-    clearInterval(this.state.scroller);
-    const scroller = setInterval(this.scroll, 5000);
-    this.setState({ carouselPage: 4, scroller: scroller });
+    const { scroller } = this.state;
+    clearInterval(scroller);
+    const scroller2 = setInterval(this.scroll, 5000);
+    this.setState({ carouselPage: 4, scroller: scroller2 });
   }
 
   b5clicked() {
-    clearInterval(this.state.scroller);
-    const scroller = setInterval(this.scroll, 5000);
-    this.setState({ carouselPage: 5, scroller: scroller });
+    const { scroller } = this.state;
+    clearInterval(scroller);
+    const scroller2 = setInterval(this.scroll, 5000);
+    this.setState({ carouselPage: 5, scroller: scroller2 });
   }
 
   /* function to scroll through carousel */
   scroll() {
-    const oldPage = this.state.carouselPage;
+    const { carouselPage } = this.state;
+    const oldPage = carouselPage;
     let newPage = oldPage + 1;
     if (newPage > 5) {
       newPage = 1;
@@ -338,22 +362,30 @@ export default class FeedbackCarousel extends React.Component {
   }
 
   checkShowCarousel() {
-    if (!this.props.showOpener) {
-      return `1s carousel ${this.state.animation} disappear both`;
+    const { animation } = this.state;
+    const { showOpener } = this.props;
+    if (!showOpener) {
+      return `1s carousel${animation}disappear both`;
     }
-    return `1s carousel ${this.state.animation} appear both`;
+    return `1s carousel${animation}appear both`;
   }
 
   addAnimations(str) {
+    const { carouselStyles } = this.state;
     const animationStyle = { animation: str };
-    const style1 = this.state.carouselStyles;
+    const style1 = carouselStyles;
     const final = { ...animationStyle, ...style1 };
     return final;
   }
 
   render() {
-    const str1 = this.getCarouselMessage(this.state.carouselPage);
-    const str2 = this.getButtonMessage(this.state.carouselPage);
+    const {
+      carouselPage,
+      closerPlacement,
+      carouselStyles,
+    } = this.state;
+    const str1 = FeedbackCarousel.getCarouselMessage(carouselPage);
+    const str2 = FeedbackCarousel.getButtonMessage(carouselPage);
     const str = this.checkShowCarousel();
     const finalStyle = this.addAnimations(str);
 
@@ -361,7 +393,7 @@ export default class FeedbackCarousel extends React.Component {
       <div style={finalStyle} className="carousel">
         <button
           type="button"
-          style={this.state.closerPlacement}
+          style={closerPlacement}
           onClick={this.closerClicked}
           className="carouselCloser"
         >
@@ -370,7 +402,7 @@ export default class FeedbackCarousel extends React.Component {
         <div>
           {str1}
           <button
-            style={{ fontSize: this.state.carouselStyles.fontSize }}
+            style={{ fontSize: carouselStyles.fontSize }}
             className="carouselBtn"
             type="button"
             onClick={this.carouselClicked}
@@ -389,3 +421,13 @@ export default class FeedbackCarousel extends React.Component {
     );
   }
 }
+
+FeedbackCarousel.propTypes = {
+  theme: PropTypes.string.isRequired,
+  openerSize: PropTypes.string.isRequired,
+  openerPlacement: PropTypes.string.isRequired,
+  closerClicked: PropTypes.func.isRequired,
+  showOpener: PropTypes.bool.isRequired,
+  toggleShowOpener: PropTypes.func.isRequired,
+  openerSetForm: PropTypes.func.isRequired,
+};

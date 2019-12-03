@@ -31,29 +31,7 @@ function popupWindow(url, title, win, w, h) {
 }
 
 export default class FeedbackPlugin extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      theme: this.checkTheme(this.props.theme),
-      openerType: this.props.openerType,
-      openerPlacement: this.checkOpenerPlacement(
-        this.props.openerPlacement,
-      ),
-      openerSize: this.checkOpenerSize(this.props.openerSize),
-      showOpener: true,
-      formIsPopup: this.props.formIsPopup,
-      formPlacement: this.props.formPlacement,
-      formCategory: null,
-      showForm: null,
-    };
-    this.openerSetForm = this.openerSetForm.bind(this);
-    this.toggleShowOpener = this.toggleShowOpener.bind(this);
-    this.toggleShowForm = this.toggleShowForm.bind(this);
-    this.closerClicked = this.closerClicked.bind(this);
-  }
-
-  /* constructor's functions to check props and use defaults if they're not specified */
-  checkTheme(theme) {
+  static checkTheme(theme) {
     switch (theme) {
       case 'red':
         return 'red';
@@ -76,7 +54,7 @@ export default class FeedbackPlugin extends React.Component {
     }
   }
 
-  checkOpenerPlacement(openerPlacement) {
+  static checkOpenerPlacement(openerPlacement) {
     switch (openerPlacement) {
       case 'top':
         return 'top';
@@ -99,7 +77,7 @@ export default class FeedbackPlugin extends React.Component {
     }
   }
 
-  checkOpenerSize(openerSize) {
+  static checkOpenerSize(openerSize) {
     switch (openerSize) {
       case 'small':
         return 'small';
@@ -112,20 +90,55 @@ export default class FeedbackPlugin extends React.Component {
     }
   }
 
+  constructor(props) {
+    super(props);
+    const {
+      theme,
+      openerType,
+      openerPlacement,
+      openerSize,
+      formIsPopup,
+      formPlacement,
+      popupWidth,
+      popupHeight,
+      popupUrl,
+    } = this.props;
+    this.state = {
+      theme: FeedbackPlugin.checkTheme(theme),
+      openerType,
+      openerPlacement: FeedbackPlugin.checkOpenerPlacement(
+        openerPlacement,
+      ),
+      openerSize: FeedbackPlugin.checkOpenerSize(openerSize),
+      showOpener: true,
+      formIsPopup,
+      formPlacement,
+      formCategory: null,
+      showForm: null,
+      popupWidth,
+      popupHeight,
+      popupUrl,
+    };
+    this.openerSetForm = this.openerSetForm.bind(this);
+    this.toggleShowOpener = this.toggleShowOpener.bind(this);
+    this.toggleShowForm = this.toggleShowForm.bind(this);
+    this.closerClicked = this.closerClicked.bind(this);
+  }
+
   /* functions used by children */
   openerSetForm(cat) {
     switch (cat) {
       case 1:
-        this.setState({ formCategory: 1, showForm: true }); // general feedback
+        this.setState({ formCategory: 1, showForm: true }); // vulnerability
         break;
       case 2:
-        this.setState({ formCategory: 2, showForm: true }); // usability issue
+        this.setState({ formCategory: 2, showForm: true }); // bug report
         break;
       case 3:
-        this.setState({ formCategory: 3, showForm: true }); // bug report
+        this.setState({ formCategory: 3, showForm: true }); // usability issue
         break;
       case 4:
-        this.setState({ formCategory: 4, showForm: true }); // vulnerability report
+        this.setState({ formCategory: 4, showForm: true }); // general feedback
         break;
       case 5:
         this.setState({ formCategory: 5, showForm: true }); // feature suggestion
@@ -134,14 +147,14 @@ export default class FeedbackPlugin extends React.Component {
         this.setState({ formCategory: 6, showForm: true }); // shows all selection; page 1
         break;
       default:
-        this.setState({ formCategory: 1, showForm: true }); // general feedback
+        this.setState({ formCategory: 4, showForm: true }); // general feedback
     }
   }
 
   toggleShowOpener() {
-    const a = this.state.showOpener;
-    const b = !a;
-    this.setState({ showOpener: b });
+    const { showOpener } = this.state;
+    const a = !showOpener;
+    this.setState({ showOpener: a });
   }
 
   closerClicked() {
@@ -149,22 +162,28 @@ export default class FeedbackPlugin extends React.Component {
   }
 
   toggleShowForm() {
-    const a = this.state.showForm;
-    const b = !a;
-    this.setState({ showForm: b });
+    const { showForm } = this.state;
+    const a = !showForm;
+    this.setState({ showForm: a });
   }
 
   /* functions used upon rendering opener or form */
   checkOpenerType(openerType) {
+    const {
+      theme,
+      openerSize,
+      openerPlacement,
+      showOpener,
+    } = this.state;
     switch (openerType) {
       case 'basic':
         return (
           <FeedbackBasic
-            theme={this.state.theme}
-            openerSize={this.state.openerSize}
-            openerPlacement={this.state.openerPlacement}
+            theme={theme}
+            openerSize={openerSize}
+            openerPlacement={openerPlacement}
             openerSetForm={this.openerSetForm}
-            showOpener={this.state.showOpener}
+            showOpener={showOpener}
             toggleShowOpener={this.toggleShowOpener}
             closerClicked={this.closerClicked}
           />
@@ -172,11 +191,11 @@ export default class FeedbackPlugin extends React.Component {
       case 'carousel':
         return (
           <FeedbackCarousel
-            theme={this.state.theme}
-            openerSize={this.state.openerSize}
-            openerPlacement={this.state.openerPlacement}
+            theme={theme}
+            openerSize={openerSize}
+            openerPlacement={openerPlacement}
             openerSetForm={this.openerSetForm}
-            showOpener={this.state.showOpener}
+            showOpener={showOpener}
             toggleShowOpener={this.toggleShowOpener}
             closerClicked={this.closerClicked}
           />
@@ -184,11 +203,11 @@ export default class FeedbackPlugin extends React.Component {
       default:
         return (
           <FeedbackBasic
-            theme={this.state.theme}
-            openerSize={this.state.openerSize}
-            openerPlacement={this.state.openerPlacement}
+            theme={theme}
+            openerSize={openerSize}
+            openerPlacement={openerPlacement}
             openerSetForm={this.openerSetForm}
-            showOpener={this.state.showOpener}
+            showOpener={showOpener}
             toggleShowOpener={this.toggleShowOpener}
             closerClicked={this.closerClicked}
           />
@@ -196,22 +215,29 @@ export default class FeedbackPlugin extends React.Component {
     }
   }
 
-  checkFormType(formIsPopup, showForm) {
+  checkFormType(
+    formIsPopup,
+    showForm,
+    popupUrl,
+    popupWidth,
+    popupHeight,
+  ) {
+    const { theme, formPlacement, formCategory } = this.state;
     if (showForm === null) {
       return null;
     }
     if (formIsPopup === true) {
       // popup form if showForm is true
       if (showForm === true) {
-        popupWindow('http://localhost:8081', '', window, 400, 400);
+        popupWindow(popupUrl, '', window, popupWidth, popupHeight);
       }
     } else if (showForm === true) {
       // render form depending on showForm true or false
       return (
         <FeedbackForm
-          theme={this.state.theme}
-          formPlacement={this.state.formPlacement}
-          formCategory={this.state.formCategory}
+          theme={theme}
+          formPlacement={formPlacement}
+          formCategory={formCategory}
           toggleShowForm={this.toggleShowForm}
           toggleShowOpener={this.toggleShowOpener}
         />
@@ -221,10 +247,21 @@ export default class FeedbackPlugin extends React.Component {
   }
 
   render() {
-    const opener = this.checkOpenerType(this.state.openerType);
+    const {
+      openerType,
+      formIsPopup,
+      showForm,
+      popupUrl,
+      popupWidth,
+      popupHeight,
+    } = this.state;
+    const opener = this.checkOpenerType(openerType);
     const form = this.checkFormType(
-      this.state.formIsPopup,
-      this.state.showForm,
+      formIsPopup,
+      showForm,
+      popupUrl,
+      popupWidth,
+      popupHeight,
     );
 
     return (
@@ -243,4 +280,19 @@ FeedbackPlugin.propTypes = {
   openerSize: PropTypes.string,
   formIsPopup: PropTypes.bool,
   formPlacement: PropTypes.string,
+  popupWidth: PropTypes.number,
+  popupHeight: PropTypes.number,
+  popupUrl: PropTypes.string,
+};
+
+FeedbackPlugin.defaultProps = {
+  theme: 'blue',
+  openerType: 'basic',
+  openerPlacement: 'bottom-right',
+  openerSize: 'medium',
+  formIsPopup: false,
+  formPlacement: 'center',
+  popupWidth: null,
+  popupHeight: null,
+  popupUrl: '',
 };

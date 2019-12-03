@@ -27,16 +27,9 @@
     "rules": {
         "prettier/prettier": ["error"],
         "operator-linebreak": "off",
-        "react/destructuring-assignment": "off",
-        "react/prop-types": "off",
-        "class-methods-use-this": "off",
-        "prefer-destructuring": "off",
-        "object-shorthand": "off",
         "arrow-parens": "off",
-        "jsx-a11y/label-has-associated-control": [ "error", {
-          "required": {
-            "some": [ "nesting", "id"  ]
-          }
-        }]
+        "object-curly-newline": "off",
+        "jsx-a11y/label-has-associated-control": "warn",
+        "jsx-a11y/mouse-events-have-key-events": "warn"
     }
 }

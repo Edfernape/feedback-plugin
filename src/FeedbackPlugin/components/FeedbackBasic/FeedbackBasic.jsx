@@ -19,33 +19,32 @@ openerDivStyles
 */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import './FeedbackBasic.css';
 
 export default class FeedbackBasic extends React.Component {
   constructor(props) {
     super(props);
+    const { theme, openerSize, openerPlacement } = this.props;
     this.state = {
-      theme: this.setTheme(this.props.theme),
-      openerSize: this.setOpenerSize(this.props.openerSize),
-      divSize: this.setDivSize(this.props.openerSize),
-      divPlacement: this.setDivPlacement(this.props.openerPlacement),
-      closerPlacement: this.setCloserPlacement(
-        this.props.openerPlacement,
+      theme: FeedbackBasic.setTheme(theme),
+      openerSize: FeedbackBasic.setOpenerSize(openerSize),
+      divSize: FeedbackBasic.setDivSize(openerSize),
+      divPlacement: FeedbackBasic.setDivPlacement(openerPlacement),
+      closerPlacement: FeedbackBasic.setCloserPlacement(
+        openerPlacement,
       ),
       openerStyles: {},
       openerDivStyles: {},
-      animation: this.setAnimation(this.props.openerPlacement),
+      animation: FeedbackBasic.setAnimation(openerPlacement),
     };
     this.openerClicked = this.openerClicked.bind(this);
     this.closerClicked = this.closerClicked.bind(this);
   }
 
   componentDidMount() {
-    const theme = this.state.theme;
-    const openerSize = this.state.openerSize;
+    const { theme, openerSize, divPlacement, divSize } = this.state;
     const styles1 = { ...theme, ...openerSize };
-    const divPlacement = this.state.divPlacement;
-    const divSize = this.state.divSize;
     const styles2 = { ...divPlacement, ...divSize };
     this.setState({
       openerStyles: styles1,
@@ -54,7 +53,7 @@ export default class FeedbackBasic extends React.Component {
   }
 
   /* constructor's functions to set opener's state */
-  setTheme(theme) {
+  static setTheme(theme) {
     switch (theme) {
       case 'red':
         return { backgroundColor: '#e42217', color: 'whitesmoke' };
@@ -77,7 +76,7 @@ export default class FeedbackBasic extends React.Component {
     }
   }
 
-  setOpenerSize(size) {
+  static setOpenerSize(size) {
     switch (size) {
       case 'small':
         return { fontSize: 'small' };
@@ -90,7 +89,7 @@ export default class FeedbackBasic extends React.Component {
     }
   }
 
-  setDivSize(size) {
+  static setDivSize(size) {
     switch (size) {
       case 'small':
         return { width: '90px', height: '30px' };
@@ -103,7 +102,7 @@ export default class FeedbackBasic extends React.Component {
     }
   }
 
-  setDivPlacement(placement) {
+  static setDivPlacement(placement) {
     switch (placement) {
       case 'top':
         return {
@@ -142,7 +141,7 @@ export default class FeedbackBasic extends React.Component {
     }
   }
 
-  setCloserPlacement(placement) {
+  static setCloserPlacement(placement) {
     switch (placement) {
       case 'top':
         return {
@@ -201,7 +200,7 @@ export default class FeedbackBasic extends React.Component {
     }
   }
 
-  setAnimation(placement) {
+  static setAnimation(placement) {
     switch (placement) {
       case 'top':
         return 'T';
@@ -226,37 +225,44 @@ export default class FeedbackBasic extends React.Component {
 
   /* onClick functions */
   openerClicked() {
-    this.props.toggleShowOpener();
-    this.props.openerSetForm(6);
+    const { toggleShowOpener, openerSetForm } = this.props;
+    toggleShowOpener();
+    openerSetForm(6);
   }
 
   closerClicked() {
-    this.props.closerClicked();
+    const { closerClicked } = this.props;
+    closerClicked();
   }
 
   /* functions used upon rendering */
   checkShowOpener() {
-    if (this.props.showOpener) {
-      return `1s ${this.state.animation}appear both`;
+    const { showOpener } = this.props;
+    const { animation } = this.state;
+    if (showOpener) {
+      return `1s ${animation}appear both`;
     }
-    return `1s ${this.state.animation}disappear both`;
+    return `1s ${animation}disappear both`;
   }
 
   checkShowOpener2() {
-    if (this.props.showOpener) {
+    const { showOpener } = this.props;
+    if (showOpener) {
       return false;
     }
     return true;
   }
 
   addAnimations(str) {
-    const style1 = this.state.openerDivStyles;
+    const { openerDivStyles } = this.state;
+    const style1 = openerDivStyles;
     const style2 = { animation: str };
     const style3 = { ...style1, ...style2 };
     return style3;
   }
 
   render() {
+    const { closerPlacement, openerStyles } = this.state;
     const str = this.checkShowOpener();
     const disabled = this.checkShowOpener2();
     const finalStyle = this.addAnimations(str);
@@ -266,7 +272,7 @@ export default class FeedbackBasic extends React.Component {
         <button
           type="button"
           disabled={disabled}
-          style={this.state.closerPlacement}
+          style={closerPlacement}
           onClick={this.closerClicked}
           className="closer"
         >
@@ -275,7 +281,7 @@ export default class FeedbackBasic extends React.Component {
         <button
           disabled={disabled}
           type="button"
-          style={this.state.openerStyles}
+          style={openerStyles}
           className="opener"
           onClick={this.openerClicked}
         >
@@ -286,10 +292,12 @@ export default class FeedbackBasic extends React.Component {
   }
 }
 
-// FeedbackBasic.propTypes = {
-//   theme : PropTypes.string.isRequired,
-// }
-
-// FeedbackBasic.defaultProps = {
-
-// }
+FeedbackBasic.propTypes = {
+  theme: PropTypes.string.isRequired,
+  openerSize: PropTypes.string.isRequired,
+  openerPlacement: PropTypes.string.isRequired,
+  showOpener: PropTypes.bool.isRequired,
+  closerClicked: PropTypes.func.isRequired,
+  toggleShowOpener: PropTypes.func.isRequired,
+  openerSetForm: PropTypes.func.isRequired,
+};

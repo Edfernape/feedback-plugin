@@ -4,13 +4,15 @@ formCategory
 setCat method */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import './PageSelect.css';
 
 export default class PageSelect extends React.Component {
   constructor(props) {
     super(props);
+    const { formCategory } = this.props;
     this.state = {
-      formCategory: this.setCategory(this.props.formCategory),
+      formCategory: PageSelect.setCategory(formCategory),
     };
     this.btn1 = this.btn1.bind(this);
     this.btn2 = this.btn2.bind(this);
@@ -21,8 +23,9 @@ export default class PageSelect extends React.Component {
   }
 
   componentDidMount() {
+    const { formCategory } = this.state;
     for (let i = 1; i < 6; i += 1) {
-      if (i === this.state.formCategory) {
+      if (i === formCategory) {
         document.getElementById(`btn${i}`).className =
           'p1btnselected';
       } else {
@@ -50,8 +53,9 @@ export default class PageSelect extends React.Component {
   }
 
   componentDidUpdate() {
+    const { formCategory } = this.state;
     for (let i = 1; i < 6; i += 1) {
-      if (i === this.state.formCategory) {
+      if (i === formCategory) {
         document.getElementById(`btn${i}`).className =
           'p1btnselected';
       } else {
@@ -78,57 +82,64 @@ export default class PageSelect extends React.Component {
       .removeEventListener('click', this.btn5);
   }
 
-  setCategory(cat) {
+  static setCategory(cat) {
     if (cat === 6) {
-      return 1;
+      return 4;
     }
     return cat;
   }
 
   btn1() {
-    this.props.setCat(1);
+    const { setCat } = this.props;
+    setCat(1);
     this.setState({ formCategory: 1 });
   }
 
   btn2() {
-    this.props.setCat(2);
+    const { setCat } = this.props;
+    setCat(2);
     this.setState({ formCategory: 2 });
   }
 
   btn3() {
-    this.props.setCat(3);
+    const { setCat } = this.props;
+    setCat(3);
     this.setState({ formCategory: 3 });
   }
 
   btn4() {
-    this.props.setCat(4);
+    const { setCat } = this.props;
+    setCat(4);
     this.setState({ formCategory: 4 });
   }
 
   btn5() {
-    this.props.setCat(5);
+    const { setCat } = this.props;
+    setCat(5);
     this.setState({ formCategory: 5 });
   }
 
   next() {
-    this.props.setCat(this.state.formCategory);
-    this.props.childSetPage(2);
+    const { setCat, childSetPage } = this.props;
+    const { formCategory } = this.state;
+    setCat(formCategory);
+    childSetPage(2);
   }
 
   render() {
     return (
       <div className="p1">
         <h2>Please select a category for your feedback.</h2>
-        <button id="btn1" className="p1btn" type="button">
+        <button id="btn4" className="p1btn" type="button">
           General Feedback
         </button>
-        <button id="btn2" className="p1btn" type="button">
+        <button id="btn3" className="p1btn" type="button">
           Usability Issue
         </button>
-        <button id="btn3" className="p1btn" type="button">
+        <button id="btn2" className="p1btn" type="button">
           Bug Report
         </button>
-        <button id="btn4" className="p1btn" type="button">
+        <button id="btn1" className="p1btn" type="button">
           Vulnerability Report
         </button>
         <button id="btn5" className="p1btn" type="button">
@@ -141,3 +152,9 @@ export default class PageSelect extends React.Component {
     );
   }
 }
+
+PageSelect.propTypes = {
+  formCategory: PropTypes.number.isRequired,
+  childSetPage: PropTypes.func.isRequired,
+  setCat: PropTypes.func.isRequired,
+};
