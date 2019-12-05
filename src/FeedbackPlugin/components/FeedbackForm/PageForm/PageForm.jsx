@@ -1,7 +1,3 @@
-/*  props available:
-childSetPage method
-formCategory */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import './PageForm.css';
@@ -44,12 +40,13 @@ const data = {
 export default class PageForm extends React.Component {
   constructor(props) {
     super(props);
-    const { formCategory } = this.props;
+    const { formCategory, postUrl } = this.props;
     this.state = {
       formCategory,
       title: '',
       mainText: '',
       rating: 3,
+      postUrl,
     };
     this.p2back = this.p2back.bind(this);
     this.p2submit = this.p2submit.bind(this);
@@ -67,8 +64,8 @@ export default class PageForm extends React.Component {
       .getElementById('p2back')
       .addEventListener('click', this.p2back);
     document
-      .getElementById('p2form')
-      .addEventListener('submit', this.p2submit);
+      .getElementById('p2submit')
+      .addEventListener('click', this.p2submit);
     document
       .getElementById('rate1')
       .addEventListener('click', this.rate1clicked);
@@ -91,8 +88,8 @@ export default class PageForm extends React.Component {
       .getElementById('p2back')
       .removeEventListener('click', this.p2back);
     document
-      .getElementById('p2form')
-      .removeEventListener('submit', this.p2submit);
+      .getElementById('p2submit')
+      .removeEventListener('click', this.p2submit);
     document
       .getElementById('rate1')
       .removeEventListener('click', this.rate1clicked);
@@ -144,12 +141,16 @@ export default class PageForm extends React.Component {
   }
 
   p2submit() {
-    const { formCategory, title, mainText, rating } = this.state;
+    const {
+      formCategory,
+      title,
+      mainText,
+      rating,
+      postUrl,
+    } = this.state;
     const { childSetPage } = this.props;
-    // event.preventDefault();
 
-    // using fetch to post
-    fetch('http://localhost:3000/post-feedback', {
+    fetch(postUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -161,25 +162,20 @@ export default class PageForm extends React.Component {
     });
     // .then(response => {
     //   if (!response.ok) {
-    //     // console.log('Response: ');
-    //     // console.log(response);
-    //     // console.log('POST feedback response not ok.');
-    //     // console.log("Headers: "+response.headers);
-    //   } else {
-    //     // console.log('Response: ');
-    //     // console.log(response);
-    //     // return response.json();
-    //     return JSON.stringify(response);
+    //     console.log('server response not ok.');
     //   }
+    //   console.log('Response: ');
+    //   console.log(response);
+    //   return response.json();
+    // })
+    // .then(json => {
+    //   console.log('JSON: ');
+    //   console.log(json);
+    // })
+    // .catch(error => {
+    //   console.log('Error: ');
+    //   console.log(error);
     // });
-    //   .then(json => {
-    //     console.log('JSON: ');
-    //     console.log(json);
-    //   })
-    //   .catch(error => {
-    //     console.log('Error: ');
-    //     console.log(error);
-    //   });
 
     childSetPage(3);
   }
@@ -268,7 +264,12 @@ export default class PageForm extends React.Component {
             &#x2605;
           </label>
         </div>
-        <input className="p2submit" type="submit" value="Submit" />
+        <input
+          id="p2submit"
+          className="p2submit"
+          type="button"
+          value="Submit"
+        />
         <button id="p2back" className="p2back" type="button">
           Back
         </button>
@@ -280,4 +281,5 @@ export default class PageForm extends React.Component {
 PageForm.propTypes = {
   formCategory: PropTypes.number.isRequired,
   childSetPage: PropTypes.func.isRequired,
+  postUrl: PropTypes.string.isRequired,
 };

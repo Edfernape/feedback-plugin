@@ -1,8 +1,3 @@
-/*  props available:
-childSetPage method
-formCategory
-setCat method */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import './PageSelect.css';

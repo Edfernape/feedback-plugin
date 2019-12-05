@@ -1,23 +1,3 @@
-/* props available:
-
-theme = red|yellow|blue|green|orange|purple|dark|light
-openerPlacement = top|top-right|right|bottom-right|bottom|bottom-left|left|top-left
-openerSize = small|medium|large
-showOpener = true|false
-
-openerSetForm method
-toggleShowOpener method
-closerClicked method
-
-local states:
-divSize
-divPlacement
-closerPlacement
-openerStyles
-animation
-openerDivStyles
-*/
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import './FeedbackBasic.css';
@@ -52,7 +32,6 @@ export default class FeedbackBasic extends React.Component {
     });
   }
 
-  /* constructor's functions to set opener's state */
   static setTheme(theme) {
     switch (theme) {
       case 'red':
@@ -223,7 +202,6 @@ export default class FeedbackBasic extends React.Component {
     }
   }
 
-  /* onClick functions */
   openerClicked() {
     const { toggleShowOpener, openerSetForm } = this.props;
     toggleShowOpener();
@@ -235,7 +213,6 @@ export default class FeedbackBasic extends React.Component {
     closerClicked();
   }
 
-  /* functions used upon rendering */
   checkShowOpener() {
     const { showOpener } = this.props;
     const { animation } = this.state;

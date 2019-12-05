@@ -1,22 +1,3 @@
-/* props available:
-
-theme = red|yellow|blue|green|orange|purple|dark|light
-openerPlacement = top|top-right|right|bottom-right|bottom|bottom-left|left|top-left
-openerSize: small|medium|large
-showOpener: true|false
-
-openerSetForm method
-toggleShowOpener method
-closerClicked method
-
-local states:
-carouselStyles
-animation
-scroller
-carouselPage
-closerPlacement
-*/
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import './FeedbackCarousel.css';
@@ -195,7 +176,6 @@ export default class FeedbackCarousel extends React.Component {
     }
   }
 
-  /* functions called upon rendering */
   static getCarouselMessage(page) {
     return carouselMessage[page];
   }
@@ -249,7 +229,6 @@ export default class FeedbackCarousel extends React.Component {
   }
 
   componentDidMount() {
-    // set styles, "timer" for scroll and event listeners
     const { theme, carouselSize, carouselPlacement } = this.state;
     const style = { ...theme, ...carouselSize, ...carouselPlacement };
     const scroller = setInterval(this.scroll, 5000);
@@ -302,7 +281,6 @@ export default class FeedbackCarousel extends React.Component {
       .removeEventListener('click', this.b5clicked);
   }
 
-  /* onClick functions */
   closerClicked() {
     const { closerClicked } = this.props;
     closerClicked();
@@ -350,7 +328,6 @@ export default class FeedbackCarousel extends React.Component {
     this.setState({ carouselPage: 5, scroller: scroller2 });
   }
 
-  /* function to scroll through carousel */
   scroll() {
     const { carouselPage } = this.state;
     const oldPage = carouselPage;

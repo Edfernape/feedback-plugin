@@ -1,17 +1,3 @@
-/* props available:
-theme = red|yellow|blue|green|orange|purple|dark|light
-formPlacement = top|top-right|right|bottom-right|bottom|bottom-left|left|top-left|centre
-formCategory = null|bugReport|vulnerabilityReport|general|featureSuggestion|usabilityIssue|selection
-showForm = true|false|null
-
-toggleShowForm method
-toggleShowOpener method
-
-local states:
-formPage = 1|2|3
-formStyles
-*/
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import './FeedbackForm.css';
@@ -19,26 +5,22 @@ import PageSelect from './PageSelect/PageSelect';
 import PageForm from './PageForm/PageForm';
 
 export default class FeedbackForm extends React.Component {
-  /* local drag function */
   static drag() {
     let pos1 = 0;
     let pos2 = 0;
     let pos3 = 0;
     let pos4 = 0;
     function stopDrag() {
-      /* stop moving when mouse button is released: */
       document.onmouseup = null;
       document.onmousemove = null;
     }
     function startDrag(e) {
       const e1 = e || window.event;
       e.preventDefault();
-      // calculate the new cursor position:
       pos1 = pos3 - e1.clientX;
       pos2 = pos4 - e1.clientY;
       pos3 = e1.clientX;
       pos4 = e1.clientY;
-      // set the element's new position:
       document.getElementById(
         'form',
       ).style.top = `${document.getElementById('form').offsetTop -
@@ -51,11 +33,9 @@ export default class FeedbackForm extends React.Component {
     function handleDrag(e) {
       const e1 = e || window.event;
       e.preventDefault();
-      // get the mouse cursor position at startup:
       pos3 = e1.clientX;
       pos4 = e1.clientY;
       document.onmouseup = stopDrag;
-      // call a function whenever the cursor moves:
       document.onmousemove = startDrag;
     }
     document.getElementById('formdragbar').onmousedown = handleDrag;
@@ -63,15 +43,20 @@ export default class FeedbackForm extends React.Component {
 
   constructor(props) {
     super(props);
-    const { theme, formPlacement, formCategory } = this.props;
+    const {
+      theme,
+      formPlacement,
+      formCategory,
+      postUrl,
+    } = this.props;
     this.state = {
       theme: FeedbackForm.setTheme(theme),
       formPlacement: FeedbackForm.setPlacement(formPlacement),
       formCategory,
       formPage: 1,
       formStyles: {},
+      postUrl,
     };
-    // this.drag = this.drag.bind(this);
     this.formCloserClicked = this.formCloserClicked.bind(this);
     this.childSetPage = this.childSetPage.bind(this);
     this.setCat = this.setCat.bind(this);
@@ -93,7 +78,6 @@ export default class FeedbackForm extends React.Component {
     }
   }
 
-  /* functions to set form state */
   static setTheme(theme) {
     switch (theme) {
       case 'red':
@@ -166,14 +150,12 @@ export default class FeedbackForm extends React.Component {
     }
   }
 
-  /* children's functions */
-
   setCat(cat) {
     this.setState({ formCategory: cat });
   }
 
   setPage(page) {
-    const { formCategory } = this.state;
+    const { formCategory, postUrl } = this.state;
     switch (page) {
       case 1:
         return (
@@ -189,6 +171,7 @@ export default class FeedbackForm extends React.Component {
             formCategory={formCategory}
             setCat={this.setCat}
             childSetPage={this.childSetPage}
+            postUrl={postUrl}
           />
         );
       case 3:
@@ -263,4 +246,5 @@ FeedbackForm.propTypes = {
   formCategory: PropTypes.number.isRequired,
   toggleShowOpener: PropTypes.func.isRequired,
   toggleShowForm: PropTypes.func.isRequired,
+  postUrl: PropTypes.string.isRequired,
 };

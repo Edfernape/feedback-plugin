@@ -1,19 +1,3 @@
-/* props available:
-
-theme = red|yellow|blue|green|orange|purple|dark|light
-openerType = basic|carousel
-openerPlacement = top|top-right|right|bottom-right|bottom|bottom-left|left|top-left
-openerSize = small|medium|large
-formIsPopup = true|false
-formPlacement = top|top-right|right|bottom-right|bottom|bottom-left|left|top-left|centre
-
-states:
-all props, and
-formCategory = null|bugReport|vulnerabilityReport|general|featureSuggestion|usabilityIssue|selection
-showForm = null|true|false
-showOpener = true|false
-*/
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import FeedbackCarousel from './components/FeedbackCarousel/FeedbackCarousel';
@@ -102,6 +86,7 @@ export default class FeedbackPlugin extends React.Component {
       popupWidth,
       popupHeight,
       popupUrl,
+      postUrl,
     } = this.props;
     this.state = {
       theme: FeedbackPlugin.checkTheme(theme),
@@ -118,6 +103,7 @@ export default class FeedbackPlugin extends React.Component {
       popupWidth,
       popupHeight,
       popupUrl,
+      postUrl,
     };
     this.openerSetForm = this.openerSetForm.bind(this);
     this.toggleShowOpener = this.toggleShowOpener.bind(this);
@@ -125,29 +111,28 @@ export default class FeedbackPlugin extends React.Component {
     this.closerClicked = this.closerClicked.bind(this);
   }
 
-  /* functions used by children */
   openerSetForm(cat) {
     switch (cat) {
       case 1:
-        this.setState({ formCategory: 1, showForm: true }); // vulnerability
+        this.setState({ formCategory: 1, showForm: true });
         break;
       case 2:
-        this.setState({ formCategory: 2, showForm: true }); // bug report
+        this.setState({ formCategory: 2, showForm: true });
         break;
       case 3:
-        this.setState({ formCategory: 3, showForm: true }); // usability issue
+        this.setState({ formCategory: 3, showForm: true });
         break;
       case 4:
-        this.setState({ formCategory: 4, showForm: true }); // general feedback
+        this.setState({ formCategory: 4, showForm: true });
         break;
       case 5:
-        this.setState({ formCategory: 5, showForm: true }); // feature suggestion
+        this.setState({ formCategory: 5, showForm: true });
         break;
       case 6:
-        this.setState({ formCategory: 6, showForm: true }); // shows all selection; page 1
+        this.setState({ formCategory: 6, showForm: true });
         break;
       default:
-        this.setState({ formCategory: 4, showForm: true }); // general feedback
+        this.setState({ formCategory: 4, showForm: true });
     }
   }
 
@@ -167,7 +152,6 @@ export default class FeedbackPlugin extends React.Component {
     this.setState({ showForm: a });
   }
 
-  /* functions used upon rendering opener or form */
   checkOpenerType(openerType) {
     const {
       theme,
@@ -222,17 +206,20 @@ export default class FeedbackPlugin extends React.Component {
     popupWidth,
     popupHeight,
   ) {
-    const { theme, formPlacement, formCategory } = this.state;
+    const {
+      theme,
+      formPlacement,
+      formCategory,
+      postUrl,
+    } = this.state;
     if (showForm === null) {
       return null;
     }
     if (formIsPopup === true) {
-      // popup form if showForm is true
       if (showForm === true) {
         popupWindow(popupUrl, '', window, popupWidth, popupHeight);
       }
     } else if (showForm === true) {
-      // render form depending on showForm true or false
       return (
         <FeedbackForm
           theme={theme}
@@ -240,6 +227,7 @@ export default class FeedbackPlugin extends React.Component {
           formCategory={formCategory}
           toggleShowForm={this.toggleShowForm}
           toggleShowOpener={this.toggleShowOpener}
+          postUrl={postUrl}
         />
       );
     }
@@ -265,7 +253,7 @@ export default class FeedbackPlugin extends React.Component {
     );
 
     return (
-      <div>
+      <div style={{ zIndex: '3000000' }}>
         {opener}
         {form}
       </div>
@@ -283,6 +271,7 @@ FeedbackPlugin.propTypes = {
   popupWidth: PropTypes.number,
   popupHeight: PropTypes.number,
   popupUrl: PropTypes.string,
+  postUrl: PropTypes.string,
 };
 
 FeedbackPlugin.defaultProps = {
@@ -295,4 +284,5 @@ FeedbackPlugin.defaultProps = {
   popupWidth: null,
   popupHeight: null,
   popupUrl: '',
+  postUrl: '',
 };
