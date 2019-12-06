@@ -65,7 +65,7 @@ Category Number|Category Name
 
 #### An Example of the Form Data Submitted:
 
-```json
+```
 {
     category: 4,
     title: 'Too many ads',
@@ -81,7 +81,7 @@ The plugin's characteristics, such as colour scheme, position, and size, can be 
 
 #### Props List:
 Prop Name|Data Type|Possible Values|Default Value|Description
----|---|---|---|---|---
+---|---|---|---|---
 theme|String|red / yellow / blue / green / orange / purple / dark / light|blue|Defines the colour scheme of the plugin.
 openerType|String|basic / carousel|basic|Defines whether the plugin appears with a basic or a carousel design.
 openerPlacement|String|top / top-right / right / bottom-right / bottom / bottom-left / left / top-left|bottom-right|Defines where the plugin is positioned on the browser's window.
