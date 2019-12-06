@@ -1,6 +1,6 @@
 {
   "name": "feedback-plugin",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A feedback submission prototype for React applications.",
   "main": "dist/index",
   "scripts": {

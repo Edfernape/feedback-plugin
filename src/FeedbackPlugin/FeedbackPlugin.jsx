@@ -280,7 +280,7 @@ FeedbackPlugin.defaultProps = {
   openerPlacement: 'bottom-right',
   openerSize: 'medium',
   formIsPopup: false,
-  formPlacement: 'center',
+  formPlacement: 'centre',
   popupWidth: null,
   popupHeight: null,
   popupUrl: '',
