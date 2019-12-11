@@ -5,3 +5,5 @@ examples
 webpack.config.js
 .eslintrc.json
 .prettierrc
+server
+*.env

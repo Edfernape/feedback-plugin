@@ -202,6 +202,7 @@ export default class PageForm extends React.Component {
         <textarea
           style={{
             color: 'black',
+            fontSize: 'medium',
           }}
           value={mainText}
           maxLength="1000"
